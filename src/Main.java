@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class Main implements Runnable, ActionListener {
+public class Main implements Runnable, ActionListener, ComponentListener {
 	private JFrame frame;
 	private JMenuBar menuBar;
 	private JMenu playMenu;
@@ -16,15 +16,15 @@ public class Main implements Runnable, ActionListener {
     private JMenuItem easyItem;
     private JMenuItem normalItem;
     private JMenuItem hardItem;
-    private LeftPanel leftPanel;
-    private CentrePanel centrePanel;
-
+    private LeftPanel leftPanel ;
+    private CentrePanel centrePanel ;
+    private RightPanel rightPanel;
     //private JButton startButton = new JButton("Start");
 
 
    static int x, y;
     static String gameMode = "+"; // initialise game mode to addition
-    private int diff = 1; // difficulty level defines number size in 10s
+    static int diff = 1; // difficulty level defines number size in 10s
 
     public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -45,6 +45,7 @@ public class Main implements Runnable, ActionListener {
             gameMode = "+";
             System.out.println(gameMode);
             centrePanel.displaySum(diff);
+
         }
         if ("Subtract".equals(ev.getActionCommand())) {
             gameMode = "-";
@@ -69,6 +70,30 @@ public class Main implements Runnable, ActionListener {
 
 
         // setVisible(false);
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+
+//        Dimension frameSize = frame.getContentPane().getSize();
+//        leftPanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
+//       centrePanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
+//        rightPanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+
     }
 
     // set click handler for the start game menu item
@@ -136,54 +161,45 @@ public class Main implements Runnable, ActionListener {
 		// put the menubar on the frame
 		frame.setJMenuBar(menuBar);
 
-        LeftPanel leftPanel = new LeftPanel();
-        CentrePanel centrePanel = new CentrePanel();
+
+        frame.addComponentListener(this);
+
+
+
+         leftPanel = new LeftPanel();
+
+         centrePanel = new CentrePanel();
+         rightPanel = new RightPanel();
 
         // Create a new panel (defaults to BorderLayout)
         JPanel pane =  new JPanel();
-        //pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
-
-        // Add some stuff to the borderlayout
-        //JButton button = new JButton("Button 1 (PAGE_START)");
-
-//        add the flow layout to the border layout top frame
-        //pane.add(panel, BorderLayout.PAGE_START);
-
-        //Make the center component big, since that's the
-//        //typical usage of BorderLayout.
-//        JTextArea ta = new JTextArea();
-//        JScrollPane sp = new JScrollPane(ta);
-
-//        button = new JButton("Button 2 (Start)");
-//        button.setPreferredSize(new Dimension(200, 100));
 
         // ADD AN INSTANCE OF LEFTPANEL TO THE LAYOUT
 
-        pane.add(new LeftPanel(), BorderLayout.LINE_START);
-//
-//        button = new JButton("Button 3 (Centre)");
-//        pane.add(button, BorderLayout.CENTER);
-        pane.add(new CentrePanel(), BorderLayout.CENTER);
+        pane.add(leftPanel, BorderLayout.LINE_START);
 
-       JButton button = new JButton("Long-Named Button 4 (PAGE_END)");
-        pane.add(button, BorderLayout.PAGE_END);
+        // ADD CENTREPANEL
+        pane.add(centrePanel, BorderLayout.CENTER);
 
-        button = new JButton("5 (LINE_END)");
+       // ADD RIGHTPANEL
+        pane.add(rightPanel, BorderLayout.PAGE_END);
+
+        JButton button = new JButton("5 (LINE_END)");
         pane.add(button, BorderLayout.LINE_END);
 
         // Add the panel to the frame
         frame.add(pane);
         // Add input listeners
-        ActionListener inputListener = new ChkAnsListener();
-        checkAnsButton.addActionListener(inputListener);
+        //ActionListener inputListener = new ChkAnsListener();
+        //checkAnsButton.addActionListener(inputListener);
         //startButton.addActionListener(this);
         //setPreferredSize(new Dimension(300, 200));
         //pack();
         //setLocationRelativeTo(frame);
-        for (int i = 0; i<5; i++)
-        {
-            ta.append("High Score: " + i + "\n");
-        }
+//        for (int i = 0; i<5; i++)
+//        {
+//            ta.append("High Score: " + i + "\n");
+//        }
 
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -192,36 +208,37 @@ public class Main implements Runnable, ActionListener {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
+
 	}
-    public class ChkAnsListener implements ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-
-            if (Main.gameMode.equals("+"))
-            {
-                if (centrePanel.checkAdd(Main.x,Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-
-            }else  if (Main.gameMode.equals("-"))
-            {
-                if (centrePanel.checkSubtract(Main.x,Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-
-            }else
-            {
-                if (centrePanel.checkMultiply(Main.x,Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-            }
-
-
-        }
-    }
+//    public class ChkAnsListener implements ActionListener {
+//
+//        public void actionPerformed(ActionEvent e) {
+//
+//            if (Main.gameMode.equals("+"))
+//            {
+//                if (centrePanel.checkAdd(Main.x,Main.y))
+//                    System.out.println("CORRECT!!");
+//                else
+//                    System.out.println("INCORRECT!!");
+//
+//            }else  if (Main.gameMode.equals("-"))
+//            {
+//                if (centrePanel.checkSubtract(Main.x,Main.y))
+//                    System.out.println("CORRECT!!");
+//                else
+//                    System.out.println("INCORRECT!!");
+//
+//            }else
+//            {
+//                if (centrePanel.checkMultiply(Main.x,Main.y))
+//                    System.out.println("CORRECT!!");
+//                else
+//                    System.out.println("INCORRECT!!");
+//            }
+//
+//
+//        }
+//    }
 
 }
 

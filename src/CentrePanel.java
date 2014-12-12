@@ -10,21 +10,24 @@ import java.awt.event.ActionListener;
  */
 public class CentrePanel extends JPanel {
 
-    private JLabel label = new JLabel("Ready to play?");
-    private JButton checkAnsButton = new JButton("Check Answer");
-    private JTextField tfAnswer = new JTextField(5);
+    private JLabel label;
+
+    public static JTextField tfAnswer;
 
     public CentrePanel() {
 
-        setLayout(new FlowLayout());
+
+        super(new FlowLayout());
         //panel.add(startButton);
         //add(Box.createRigidArea(new Dimension(0, 5)));
+        label = new JLabel("Ready to play?");
         add(label);
 //        add(Box.createRigidArea(new Dimension(0, 5)));
 
+        tfAnswer = new JTextField(5);
         add(tfAnswer);
 //        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(checkAnsButton);
+
 
 
     }
@@ -35,6 +38,8 @@ public class CentrePanel extends JPanel {
         int y = getRandomNumber(diff);
         Main.y = y;
         label.setText("What is " + x + " " + Main.gameMode + " " + y + "?");
+        //label.repaint();
+
     }
 
     public int getRandomNumber(int size) {
@@ -47,36 +52,5 @@ public class CentrePanel extends JPanel {
 
 
 
-
-    public boolean checkMultiply(int x, int y) {
-        boolean b = false;
-        String s = tfAnswer.getText();
-        int ans = Integer.parseInt(s);
-        if (x * y == ans)
-            b = true;
-
-        return b;
-
-    }
-    public boolean checkAdd(int x, int y) {
-        boolean b = false;
-        String s = tfAnswer.getText();
-        int ans = Integer.parseInt(s);
-        if (x + y == ans)
-            b = true;
-
-        return b;
-
-    }
-    public boolean checkSubtract(int x, int y) {
-        boolean b = false;
-        String s = tfAnswer.getText();
-        int ans = Integer.parseInt(s);
-        if (x - y == ans)
-            b = true;
-
-        return b;
-
-    }
 
 }

@@ -11,6 +11,7 @@ public class LeftPanel extends JPanel {
 
     public LeftPanel() {
 
+        super();
         JTextArea ta = new JTextArea();
         JScrollPane sp = new JScrollPane(ta);
 
@@ -19,7 +20,7 @@ public class LeftPanel extends JPanel {
         for (int i = 0; i < 5; i++) {
             ta.append("High Score: " + i + "\n");
         }
-
+        repaint();
 
     }
 }
