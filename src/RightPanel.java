@@ -3,13 +3,14 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Jamie on 11/12/14.
  */
-public class RightPanel extends JPanel {
+public class RightPanel extends JPanel implements ActionListener {
 
-    private JButton checkAnsButton = new JButton("Check Answer");
+
     private JComboBox comboBox;
 
     public RightPanel() {
@@ -25,6 +26,28 @@ public class RightPanel extends JPanel {
         comboBox.addItem("Challenging");
         comboBox.addItem("Hard");
 
+        JRadioButton rdbAdd = new JRadioButton("Add");
+        rdbAdd.setMnemonic(KeyEvent.VK_A);
+        rdbAdd.setActionCommand("Add");
+        rdbAdd.setSelected(true);
+
+        JRadioButton rdbSubtract = new JRadioButton("Subtract");
+        rdbSubtract.setMnemonic(KeyEvent.VK_S);
+        rdbSubtract.setActionCommand("Subtract");
+
+        JRadioButton rdbMultiply = new JRadioButton("Multiply");
+        rdbMultiply.setMnemonic(KeyEvent.VK_M);
+        rdbMultiply.setActionCommand("Multiply");
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdbAdd);
+        group.add(rdbSubtract);
+        group.add(rdbMultiply);
+
+        rdbAdd.addActionListener(this);
+        rdbSubtract.addActionListener(this);
+        rdbMultiply.addActionListener(this);
+
         comboBox.addActionListener(new ActionListener() {
 
             @Override
@@ -36,6 +59,7 @@ public class RightPanel extends JPanel {
                     System.out.println("Select Difficulty");
                 } else if (selectedDifficulty.equals("Easy")) {
                     Main.diff = 1;
+
                 }else if (selectedDifficulty.equals("Challenging")) {
                     Main.diff = 2;
                 }else if (selectedDifficulty.equals("Hard")) {
@@ -44,93 +68,32 @@ public class RightPanel extends JPanel {
             }
         });
 
+
+        add(rdbAdd);
+        add(rdbSubtract);
+        add(rdbMultiply);
         add(comboBox);
-        add(checkAnsButton);
-        checkAnsButton.addActionListener(new ChkAnsListener());
 
     }
 
+    public void actionPerformed(ActionEvent e) {
 
-    public class ChkAnsListener implements ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-
-            if (Main.gameMode.equals("+"))
-            {
-                if (checkAdd(Main.x, Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-
-            }else  if (Main.gameMode.equals("-"))
-            {
-                if (checkSubtract(Main.x, Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-
-            }else
-            {
-                if (checkMultiply(Main.x, Main.y))
-                    System.out.println("CORRECT!!");
-                else
-                    System.out.println("INCORRECT!!");
-            }
-
-
-        }
-    }
-
-
-    public boolean checkMultiply(int x, int y) {
-        boolean b = false;
-        String s = CentrePanel.tfAnswer.getText();
-        if (isNumeric(s)) {
-            int ans = Integer.parseInt(s);
-            if (x * y == ans)
-                b = true;
-
-        }
-        return b;
-
-    }
-    public boolean checkAdd(int x, int y) {
-        boolean b = false;
-        String s = CentrePanel.tfAnswer.getText();
-        if (isNumeric(s)) {
-            int ans = Integer.parseInt(s);
-            if (x + y == ans)
-                b = true;
-
-        }
-        return b;
-
-    }
-    public boolean checkSubtract(int x, int y) {
-        boolean b = false;
-        String s = CentrePanel.tfAnswer.getText();
-        if (isNumeric(s)) {
-            int ans = Integer.parseInt(s);
-            if (x - y == ans)
-                b = true;
-
-        }
-        return b;
-
-    }
-
-    public static boolean isNumeric(String str)
-    {
-        try
+        if (e.getActionCommand().equals("Add") )
         {
-            int i = Integer.parseInt(str);
+            Main.gameMode = "+";
         }
-        catch(NumberFormatException nfe)
+        if (e.getActionCommand().equals("Subtract") )
         {
-            return false;
+            Main.gameMode = "-";
         }
-        return true;
+        if (e.getActionCommand().equals("Multiply") )
+        {
+            Main.gameMode = "*";
+        }
     }
+
+
+
 
 }
 

@@ -25,6 +25,8 @@ public class Main implements Runnable, ActionListener, ComponentListener {
    static int x, y;
     static String gameMode = "+"; // initialise game mode to addition
     static int diff = 1; // difficulty level defines number size in 10s
+    static int lives = 3; // 3 lives for easy diff
+
 
     public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -101,7 +103,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
         public void actionPerformed(ActionEvent e) {
 
-            centrePanel.displaySum(diff);
+            centrePanel.startGame(diff);
         }
     }
 
@@ -166,13 +168,14 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 
 
+        // Create the layout panels
          leftPanel = new LeftPanel();
-
          centrePanel = new CentrePanel();
          rightPanel = new RightPanel();
 
         // Create a new panel (defaults to BorderLayout)
         JPanel pane =  new JPanel();
+        pane.setBackground(new Color(232, 127,255));
 
         // ADD AN INSTANCE OF LEFTPANEL TO THE LAYOUT
 
@@ -184,22 +187,12 @@ public class Main implements Runnable, ActionListener, ComponentListener {
        // ADD RIGHTPANEL
         pane.add(rightPanel, BorderLayout.PAGE_END);
 
-        JButton button = new JButton("5 (LINE_END)");
-        pane.add(button, BorderLayout.LINE_END);
+//        JButton button = new JButton("5 (LINE_END)");
+//        pane.add(button, BorderLayout.LINE_END);
 
         // Add the panel to the frame
         frame.add(pane);
-        // Add input listeners
-        //ActionListener inputListener = new ChkAnsListener();
-        //checkAnsButton.addActionListener(inputListener);
-        //startButton.addActionListener(this);
-        //setPreferredSize(new Dimension(300, 200));
-        //pack();
-        //setLocationRelativeTo(frame);
-//        for (int i = 0; i<5; i++)
-//        {
-//            ta.append("High Score: " + i + "\n");
-//        }
+
 
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -210,35 +203,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 
 	}
-//    public class ChkAnsListener implements ActionListener {
-//
-//        public void actionPerformed(ActionEvent e) {
-//
-//            if (Main.gameMode.equals("+"))
-//            {
-//                if (centrePanel.checkAdd(Main.x,Main.y))
-//                    System.out.println("CORRECT!!");
-//                else
-//                    System.out.println("INCORRECT!!");
-//
-//            }else  if (Main.gameMode.equals("-"))
-//            {
-//                if (centrePanel.checkSubtract(Main.x,Main.y))
-//                    System.out.println("CORRECT!!");
-//                else
-//                    System.out.println("INCORRECT!!");
-//
-//            }else
-//            {
-//                if (centrePanel.checkMultiply(Main.x,Main.y))
-//                    System.out.println("CORRECT!!");
-//                else
-//                    System.out.println("INCORRECT!!");
-//            }
-//
-//
-//        }
-//    }
+
 
 }
 
