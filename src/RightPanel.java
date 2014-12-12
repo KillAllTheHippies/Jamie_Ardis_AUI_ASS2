@@ -68,11 +68,11 @@ public class RightPanel extends JPanel implements ActionListener {
             }
         });
 
-
+        add(comboBox);
         add(rdbAdd);
         add(rdbSubtract);
         add(rdbMultiply);
-        add(comboBox);
+
 
     }
 
