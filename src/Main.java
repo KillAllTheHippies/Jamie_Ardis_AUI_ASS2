@@ -1,15 +1,18 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class Main implements Runnable, ActionListener, ComponentListener {
+public class Main implements Runnable, ActionListener {
 	private JFrame frame;
 	private JMenuBar menuBar;
 	private JMenu playMenu;
 	private JMenu modeMenu;
     private JMenu diffMenu;
 	private JMenuItem startMenuItem;
+    private JMenuItem highScoresMenuItem;
 	private JMenuItem addMenuItem;
 	private JMenuItem subtractMenuItem;
 	private JMenuItem multiplyMenuItem;
@@ -27,6 +30,8 @@ public class Main implements Runnable, ActionListener, ComponentListener {
     static String gameMode = "+"; // initialise game mode to addition
     static int diff = 1; // difficulty level defines number size in 10s
     static int lives = 3; // 3 lives for easy diff
+    private ArrayList<HighScore> highScores = new ArrayList<HighScore>();
+    private String strHighScores = "";
 
 
     public static void main(String[] args) {
@@ -39,11 +44,40 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 	}
 
+    public void writeScores (String fileName) throws IOException {
+        FileOutputStream fout= new FileOutputStream (fileName);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
+        oos.writeObject(highScores);
+        fout.close();
+    }
 
+    public void readScores(String fileName) throws IOException, ClassNotFoundException {
+        FileInputStream fin= new FileInputStream (fileName);
+        ObjectInputStream ois = new ObjectInputStream(fin);
+        highScores= (ArrayList<HighScore>)ois.readObject();
+        fin.close();
+    }
 
+public void showHighScores()
+{
+    strHighScores = "";
+    for (HighScore item : highScores) {
+        strHighScores += (item.getName() + " " + item.getScore() + "\n");
+
+    }
+
+    ShowHighScoreDialog dialog = new ShowHighScoreDialog(new JFrame(), "High Scores", strHighScores);
+    // set the size of the window
+    dialog.setSize(300, 150);
+}
 
     // set click handlers for the game mode menu
     public void actionPerformed(ActionEvent ev) {
+
+        if ("HighScores".equals(ev.getActionCommand()))
+        {
+            showHighScores();
+        }
 
         if ("Add".equals(ev.getActionCommand())) {
             gameMode = "+";
@@ -76,29 +110,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
         // setVisible(false);
     }
 
-    @Override
-    public void componentResized(ComponentEvent e) {
 
-//        Dimension frameSize = frame.getContentPane().getSize();
-//        leftPanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
-//       centrePanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
-//        rightPanel.setPreferredSize(new Dimension( (int)(frameSize.getWidth() /3 ), (int)(frameSize.getHeight() ) ));
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-
-    }
 
     // set click handler for the start game menu item
     public class StartGameListener implements ActionListener {
@@ -106,6 +118,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
         public void actionPerformed(ActionEvent e) {
 
             centrePanel.startGame(diff);
+            centrePanel.enableButton();
         }
     }
 
@@ -117,15 +130,26 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 	public void run() {
 
-		menuBar = new JMenuBar();
+        try {
+            readScores("assets/highScores.ser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        menuBar = new JMenuBar();
         frame = new JFrame("Childrens Maths Game");
 		// build the File menu
 		playMenu = new JMenu("Play");
 		startMenuItem = new JMenuItem("Start");
+        highScoresMenuItem = new JMenuItem("High Scores");
+        highScoresMenuItem.setActionCommand("HighScores");
+        highScoresMenuItem.addActionListener(this);
         ActionListener listn = new StartGameListener();
 		startMenuItem.addActionListener(listn);
         startMenuItem.setActionCommand("Start");
 		playMenu.add(startMenuItem);
+        playMenu.add(highScoresMenuItem);
 
 		// build the Game Mode menu
 		modeMenu = new JMenu("Game Mode");
@@ -166,13 +190,13 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 		frame.setJMenuBar(menuBar);
 
 
-        frame.addComponentListener(this);
+
 
 
 
         // Create the layout panels
          leftPanel = new LeftPanel();
-         centrePanel = new CentrePanel();
+         centrePanel = new CentrePanel(highScores);
          rightPanel = new RightPanel();
 
         // Create a new panel (defaults to BorderLayout)
@@ -204,6 +228,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+
 
 
 	}

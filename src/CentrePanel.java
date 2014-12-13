@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by Jamie on 11/12/14.
@@ -16,13 +17,14 @@ public class CentrePanel extends JPanel {
     private JButton checkAnsButton = new JButton("Check Answer");
     private int score, lives;
     private String strScore, strLives;
+    private ArrayList<HighScore> highScores;
 
-
-    public CentrePanel() {
+    public CentrePanel(ArrayList<HighScore> highScores) {
 
 
         super();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.highScores = highScores;
         //panel.add(startButton);
         //add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -45,8 +47,37 @@ public class CentrePanel extends JPanel {
         add(checkAnsButton);
 
         checkAnsButton.addActionListener(new ChkAnsListener());
+        checkAnsButton.setEnabled(false);
 
 
+    }
+    public void enableButton()
+    {
+        checkAnsButton.setEnabled(true);
+    }
+    public void disableButton()
+    {
+        checkAnsButton.setEnabled(false);
+    }
+
+    public boolean checkIfNewHighScore(int score)
+    {
+        int tmpScore;
+        int highestScore = 0;
+        boolean b = false;
+        if (!highScores.isEmpty()) {
+            for (HighScore item : highScores) {
+                tmpScore = item.getScore();
+                if (score > tmpScore)
+                    highestScore = score;
+                else
+                    highestScore = tmpScore;
+            }
+            if (score == highestScore)
+                b = true;
+        }
+        else b = true; // means highscores is empty
+        return b;
     }
     public void startGame(int diff)
     {
@@ -70,6 +101,11 @@ public class CentrePanel extends JPanel {
     public void gameOver()
     {
         lblLives.setText("Game Over");
+        if (checkIfNewHighScore(score)) {
+            NewHighScoreDialog dialog = new NewHighScoreDialog(new JFrame(), "New High Score!", "Please enter your Name",highScores,score);
+            dialog.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        }
+        disableButton();
 
     }
     public void checkContinue()

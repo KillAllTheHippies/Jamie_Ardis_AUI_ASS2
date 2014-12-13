@@ -23,7 +23,8 @@ public class LeftPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         add(sp);
-        ta.setText("Multiplication tables go here\n\n\n\n\n\n\n\n\n\n\n");
+        ta.setText("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        ta.setEditable(false);
 //        ta.append(readData("assets/1x.txt"));
 
         add(new JListLeft(ta, sp));
