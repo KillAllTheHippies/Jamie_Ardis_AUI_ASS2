@@ -21,7 +21,7 @@ public class RightPanel extends JPanel implements ActionListener {
        // Buttons go here.
 
         comboBox = new JComboBox<String>();
-        comboBox.addItem("Select Difficulty");
+        //comboBox.addItem("Select Difficulty");
         comboBox.addItem("Easy");
         comboBox.addItem("Challenging");
         comboBox.addItem("Hard");

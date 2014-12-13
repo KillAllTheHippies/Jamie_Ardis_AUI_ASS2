@@ -19,6 +19,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
     private LeftPanel leftPanel ;
     private CentrePanel centrePanel ;
     private RightPanel rightPanel;
+    //private JFrame frame = new JFrame("Childrens Maths Game");
     //private JButton startButton = new JButton("Start");
 
 
@@ -37,6 +38,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 		SwingUtilities.invokeLater(new Main());
 
 	}
+
 
 
 
@@ -114,9 +116,9 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 
 	public void run() {
-		frame = new JFrame("Childrens Maths Game");
-		menuBar = new JMenuBar();
 
+		menuBar = new JMenuBar();
+        frame = new JFrame("Childrens Maths Game");
 		// build the File menu
 		playMenu = new JMenu("Play");
 		startMenuItem = new JMenuItem("Start");
@@ -175,7 +177,9 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
         // Create a new panel (defaults to BorderLayout)
         JPanel pane =  new JPanel();
-        pane.setBackground(new Color(232, 127,255));
+        pane.setBackground(new Color(255, 191, 32));
+        pane.setPreferredSize(new Dimension(640, 480));
+
 
         // ADD AN INSTANCE OF LEFTPANEL TO THE LAYOUT
 
@@ -196,7 +200,7 @@ public class Main implements Runnable, ActionListener, ComponentListener {
 
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(400, 300));
+		frame.setPreferredSize(new Dimension(640, 480));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
